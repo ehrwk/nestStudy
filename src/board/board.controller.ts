@@ -1,7 +1,7 @@
 import { Body, Controller, Param, Get, Post, Put } from '@nestjs/common';
 import { Board } from '@prisma/client';
-import { createBoardDto } from './dto/create-board.dto';
-import { updateBoardDto } from './dto/update-board.dto';
+import { CreateBoardDto } from './dto/create-board.dto';
+import { UpdateBoardDto } from './dto/update-board.dto';
 
 import { BoardService } from './board.service';
 
@@ -23,7 +23,7 @@ export class BoradController {
 
     //게시글 생성
     @Post()
-    createBoard(@Body() boardData: createBoardDto){
+    createBoard(@Body() boardData: CreateBoardDto){
         return this.boardService.createBoard(boardData);
     }
 
@@ -31,7 +31,7 @@ export class BoradController {
     //put은 전체 수정(대체)
     //fetch는 부분 수정
     @Put("/:id")
-    updateBoard(@Param("id") boardIndex: number, @Body() boardData: updateBoardDto){
+    updateBoard(@Param("id") boardIndex: number, @Body() boardData: UpdateBoardDto){
         return this.boardService.updateBoard(boardIndex, boardData);
 
     }

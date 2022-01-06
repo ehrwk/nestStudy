@@ -4,9 +4,10 @@ import { throws } from 'assert';
 
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
-import { createBoardDto } from 'src/board/dto/create-board.dto';
-import { updateBoardDto } from 'src/board/dto/update-board.dto';
-
+import { CreateBoardDto } from 'src/board/dto/create-board.dto';
+import { UpdateBoardDto } from 'src/board/dto/update-board.dto';
+import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
+import { UpdatecommentDto } from 'src/comment/dto/update-comment.dto';
 
 @Injectable()
 export class PrismaService extends PrismaClient
@@ -54,20 +55,20 @@ export class PrismaService extends PrismaClient
       where:{
         id: boardIdx,
       }
-    })
+    });
   }
 
   async getAllBoards(){
     return await this.board.findMany();
   }
 
-  async createBoard(boardData: createBoardDto){
+  async createBoard(boardData: CreateBoardDto){
     return await this.user.create({
       data: {boardData},
     });
   }
 
-  async updateBoard(boardIdx: number, boardData: updateBoardDto){
+  async updateBoard(boardIdx: number, boardData: UpdateBoardDto){
     return await this.board.update({
       where:{
         id: boardIdx,
@@ -79,4 +80,24 @@ export class PrismaService extends PrismaClient
     })
   }
 
+
+  //comment
+  async getComment(boardIdx: number){
+    return await this.comment.findUnique({
+      where:{
+        id: boardIdx,
+      }
+    });
+  }
+
+  async createComment(commentData: CreateCommentDto){
+    return await this.comment.create({
+      data: commentData,
+    });
+  }
+
+  async updateComment(commentData: UpdatecommentDto){
+    // return await this.comment.update({
+    // });
+  }
 }

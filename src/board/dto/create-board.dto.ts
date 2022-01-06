@@ -1,6 +1,6 @@
 import { IsString, MaxLength, IsNotEmpty, IsInt } from "class-validator";
 
-export class createBoardDto {
+export class CreateBoardDto {
     @IsString()
     @IsNotEmpty()
     @MaxLength(30)

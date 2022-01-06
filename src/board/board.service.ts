@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { throws } from 'assert';
 import { PrismaService } from "src/prisma/prisma.service";
-import { createBoardDto } from './dto/create-board.dto';
-import { updateBoardDto } from './dto/update-board.dto';
+import { CreateBoardDto } from './dto/create-board.dto';
+import { UpdateBoardDto } from './dto/update-board.dto';
 
 @Injectable()
 export class BoardService {
@@ -17,11 +17,11 @@ export class BoardService {
         return this.prisma.getAllBoards();
     }    
     
-    createBoard(boardData: createBoardDto){
+    createBoard(boardData: CreateBoardDto){
         return this.prisma.createBoard(boardData);
     }
 
-    updateBoard(boardIndex: number, boardData: updateBoardDto){
+    updateBoard(boardIndex: number, boardData: UpdateBoardDto){
         return this.prisma.updateBoard(boardIndex, boardData);
     }
 
