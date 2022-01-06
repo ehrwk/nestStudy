@@ -14,8 +14,8 @@ model User{
   id        Int       @default(autoincrement()) @id
   email     String    @unique
   nickname  String    @unique
-  password  String
-  createdAt DateTime
+  password  String    @db.VarChar(100)
+  createdAt DateTime  @default(now())
 
   boards    Board[]
   comments  Comment[]
@@ -25,7 +25,7 @@ model Board{
   id        Int       @default(autoincrement()) @id
   title     String
   content   String
-  createdAt DateTime
+  createdAt DateTime  @default(now())
   updateAt  DateTime?
   
   author    User @relation(fields: [userId], references: [id])
@@ -36,7 +36,7 @@ model Board{
 
 model Comment{
   id        Int       @default(autoincrement()) @id
-  content   String
+  content   String    @db.Text
   
   commenter User @relation(fields: [userId], references: [id])
   userId    Int
@@ -44,7 +44,7 @@ model Comment{
   postNum   Board @relation(fields: [postId], references: [userId])
   postId    Int
     
-  createdAt DateTime
+  createdAt DateTime  @default(now())
   updateAt  DateTime?
 
 }

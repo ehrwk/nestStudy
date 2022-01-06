@@ -13,15 +13,16 @@ export class BoardsService {
     }
 
     //뭐가 인수인지 모르겠다. 변수명이 같아서 확인해 보도록 하기
-    //id를 넣지 안아서 problem뜸
+    //id를 없어서 problem뜸
     createBoard(title: string, content: string){
-        const board: Board = {
-            title: title,
-            content: content,
-        }
+        // const board: Board = {
+        //     title: title,
+        //     content: content,
+            
+        // }
 
-        this.boards.push(board);
-        return board;
+        // this.boards.push(board);
+        // return board;
     }
 
 }
