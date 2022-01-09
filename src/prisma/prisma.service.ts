@@ -1,5 +1,10 @@
-import { INestApplication, Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient, User } from '@prisma/client';
+import {
+  INestApplication,
+  Injectable,
+  OnModuleInit,
+  OnModuleDestroy,
+} from '@nestjs/common';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 import { throws } from 'assert';
 
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -10,8 +15,7 @@ import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 import { UpdatecommentDto } from 'src/comment/dto/update-comment.dto';
 
 @Injectable()
-export class PrismaService extends PrismaClient
-  implements OnModuleInit {
+export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
   }
@@ -23,81 +27,98 @@ export class PrismaService extends PrismaClient
   }
 
   //user
-  async createUser(userData: CreateUserDto): Promise<User>{
+  async createUser(userData: CreateUserDto): Promise<User> {
     return await this.user.create({
-      data: {userData},
+      data: userData,
     });
   }
-  
-  async findUserById(userIdx: number) {
+
+  async findUserByUnique(input: Prisma.UserWhereUniqueInput) {
     return await this.user.findUnique({
-        where: {
-            id: userIdx,
-        }
+      where: input,
     });
   }
 
-  async updateUser(userIdx: number, userData:UpdateUserDto){
+  async updateUser(userIdx: number, userData: UpdateUserDto) {
     return await this.user.update({
-     where: {
-       id: userIdx,
-     },
-     data: {
-       data: userData,
-     }
-    })
+      where: {
+        id: userIdx,
+      },
+      data: {
+        nickname: userData.nickname,
+      },
+    });
+
+    //findUserBy
   }
 
-  
   //board
-  async getBoard(boardIdx: number){
+  async getBoard(boardIdx: number) {
     return await this.board.findUnique({
-      where:{
+      where: {
         id: boardIdx,
-      }
+      },
     });
   }
 
-  async getAllBoards(){
+  async getAllBoards() {
     return await this.board.findMany();
   }
 
-  async createBoard(boardData: CreateBoardDto){
-    return await this.user.create({
-      data: {boardData},
+  async createBoard(boardData: CreateBoardDto) {
+    const { content, title, userId } = boardData;
+    return await this.board.create({
+      data: {
+        title: title,
+        content: content,
+        userId: userId,
+      },
     });
   }
 
-  async updateBoard(boardIdx: number, boardData: UpdateBoardDto){
+  async updateBoard(boardIdx: number, boardData: UpdateBoardDto) {
+    const { title, content } = boardData;
     return await this.board.update({
-      where:{
+      where: {
         id: boardIdx,
       },
       data: {
-        data: boardData,
-      }
-
-    })
+        title: title,
+        content: content,
+        updateAt: new Date(),
+      },
+    });
   }
-
 
   //comment
-  async getComment(boardIdx: number){
+  async getComment(boardIdx: number) {
     return await this.comment.findUnique({
-      where:{
+      where: {
         id: boardIdx,
-      }
+      },
     });
   }
 
-  async createComment(commentData: CreateCommentDto){
+  async createComment(commentData: CreateCommentDto) {
+    const { content, userId, postId } = commentData;
     return await this.comment.create({
-      data: commentData,
+      data: {
+        content: content,
+        userId: userId,
+        postId: postId,
+      },
     });
   }
 
-  async updateComment(commentData: UpdatecommentDto){
-    // return await this.comment.update({
-    // });
+  async updateComment(commentData: UpdatecommentDto) {
+    const { id, content } = commentData;
+    return await this.comment.update({
+      where: {
+        id: id,
+      },
+      data: {
+        content: content,
+      },
+    });
   }
 }

@@ -10,9 +10,6 @@ export class CommentService{
 
     constructor(private prisma: PrismaService){}
 
-    //getComment(boardIndex)
-    //createComment(commentData)
-    //updateComment(commentData)
 
     getComment(boardIndex: number){
         return this.prisma.getComment(boardIndex);
@@ -23,8 +20,6 @@ export class CommentService{
     updateComment(commentData){
         return this.prisma.updateComment(commentData);
     }
-
-
 
 
 }

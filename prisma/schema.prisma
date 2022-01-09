@@ -24,7 +24,7 @@ model User{
 model Board{
   id        Int       @default(autoincrement()) @id
   title     String
-  content   String
+  content   String    @db.Text
   createdAt DateTime  @default(now())
   updateAt  DateTime?
   
@@ -33,6 +33,7 @@ model Board{
 
   comments  Comment[]
 }
+
 
 model Comment{
   id        Int       @default(autoincrement()) @id
