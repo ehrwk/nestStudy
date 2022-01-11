@@ -5,7 +5,6 @@ import {
   OnModuleDestroy,
 } from '@nestjs/common';
 import { Prisma, PrismaClient, User } from '@prisma/client';
-import { throws } from 'assert';
 
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
@@ -53,18 +52,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   //board
-  async getBoard(boardIdx: number) {
-    return await this.board.findUnique({
-      where: {
-        id: boardIdx,
-      },
-    });
-  }
-
-  async getAllBoards() {
-    return await this.board.findMany();
-  }
-
   async createBoard(boardData: CreateBoardDto) {
     const { content, title, userId } = boardData;
     return await this.board.create({
@@ -74,6 +61,16 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         userId: userId,
       },
     });
+  }
+
+  async findBoardByUnique(input: Prisma.BoardWhereUniqueInput) {
+    return await this.board.findUnique({
+      where: input,
+    });
+  }
+
+  async getAllBoards() {
+    return await this.board.findMany();
   }
 
   async updateBoard(boardIdx: number, boardData: UpdateBoardDto) {
