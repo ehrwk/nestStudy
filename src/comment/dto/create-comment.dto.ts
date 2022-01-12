@@ -10,5 +10,5 @@ export class CreateCommentDto {
   readonly userId: number;
 
   @IsInt()
-  readonly postId: number;
+  readonly boardId: number;
 }

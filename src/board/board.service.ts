@@ -29,10 +29,7 @@ export class BoardService {
   }
 
   async getAllBoards() {
-    const findBoard = await this.prisma.getAllBoards();
-    if (!findBoard) {
-      return '게시글이 존재하지 않습니다.';
-    }
+    //빈배열??
     return this.prisma.getAllBoards();
   }
 

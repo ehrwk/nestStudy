@@ -15,37 +15,37 @@ model User{
   email     String    @unique
   nickname  String    @unique
   password  String    @db.VarChar(100)
-  createdAt DateTime  @default(now())
+  createdAt DateTime  @default(now()) @map("created_at")
 
-  boards    Board[]
-  comments  Comment[]
+  board     Board[]
+  comment   Comment[]
 }
 
 model Board{
   id        Int       @default(autoincrement()) @id
-  title     String
+  title     String    @db.VarChar(50)
   content   String    @db.Text
-  createdAt DateTime  @default(now())
-  updateAt  DateTime?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updateAt  DateTime? @map("updated_at")
   
   author    User @relation(fields: [userId], references: [id])
   userId    Int
 
-  comments  Comment[]
+  comment   Comment[]
 }
 
 
 model Comment{
   id        Int       @default(autoincrement()) @id
   content   String    @db.Text
-  
-  commenter User @relation(fields: [userId], references: [id])
-  userId    Int
 
-  postNum   Board @relation(fields: [postId], references: [userId])
-  postId    Int
+  postNum   Board     @relation(fields: [boardId], references: [id])
+  boardId   Int
+  
+  commenter User      @relation(fields: [userId], references: [id])
+  userId    Int
     
-  createdAt DateTime  @default(now())
-  updateAt  DateTime?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updateAt  DateTime? @map("updated_at")
 
 }

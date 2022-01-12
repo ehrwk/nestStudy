@@ -88,6 +88,23 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   }
 
   //comment
+  async findCommentById(input: Prisma.CommentWhereInput) {
+    return await this.comment.findFirst({
+      where: input,
+    });
+  }
+
+  async createComment(commentData: CreateCommentDto) {
+    const { content, userId, boardId } = commentData;
+    return await this.comment.create({
+      data: {
+        content: content,
+        userId: userId,
+        boardId: boardId,
+      },
+    });
+  }
+
   async getComment(boardIdx: number) {
     return await this.comment.findUnique({
       where: {
@@ -96,26 +113,5 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  async createComment(commentData: CreateCommentDto) {
-    const { content, userId, postId } = commentData;
-    return await this.comment.create({
-      data: {
-        content: content,
-        userId: userId,
-        postId: postId,
-      },
-    });
-  }
-
-  async updateComment(commentData: UpdatecommentDto) {
-    const { id, content } = commentData;
-    return await this.comment.update({
-      where: {
-        id: id,
-      },
-      data: {
-        content: content,
-      },
-    });
-  }
+  async updateComment(commentData: UpdatecommentDto) {}
 }
