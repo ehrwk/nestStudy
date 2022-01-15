@@ -2,6 +2,7 @@ import { Body, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 import { User } from '@prisma/client';
 
@@ -10,7 +11,7 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async create(userData: CreateUserDto) {
-    const { nickname, email } = userData;
+    let { nickname, email, password } = userData;
     const findNick = await this.prisma.findUserByUnique({ nickname });
     const findEmail = await this.prisma.findUserByUnique({ email });
     if (findNick) {
@@ -19,6 +20,13 @@ export class UserService {
     if (findEmail) {
       return '이메일 중복';
     }
+
+    const hash = async (password) => {
+      return await bcrypt.hash(password, 10);
+    };
+
+    userData.password = await hash(password);
+    //비동기 처리시 프로미스화 하기때문에 무조건 await를 써야함...
 
     return this.prisma.createUser(userData);
   }

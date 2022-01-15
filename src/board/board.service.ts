@@ -29,7 +29,7 @@ export class BoardService {
   }
 
   async getAllBoards() {
-    //빈배열??
+    //빈배열?? 아무것도 안쓰면 빈배열
     return this.prisma.getAllBoards();
   }
 
@@ -40,7 +40,7 @@ export class BoardService {
     //   id: boardIndex,
     // });
     // const { userId } = getBoardUser;
-    //작성자 //일단 구현 못함
+    //수정자 //일단 구현 못함
     const findBoard = await this.prisma.findBoardByUnique({ id: boardIndex });
     if (!findBoard) {
       return '게시글이 존재하지 않습니다.';
